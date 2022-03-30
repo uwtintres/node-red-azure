@@ -1,7 +1,7 @@
 {
-  "name": "@ray-wang/node-red-azure-blob-storage",
+  "name": "@intres/node-red-azure-storage",
   "version": "1.0.0",
-  "description": "Node-red node for Azure Blob Storage",
+  "description": "Node-red node for Azure Storage",
   "scripts": {
     "test": "mocha 'test/**/*_spec.js'"
   },
