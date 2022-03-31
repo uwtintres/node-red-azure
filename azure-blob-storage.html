@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    RED.nodes.registerType('azure-blob-storage',{
+    RED.nodes.registerType('azure-blob-storage-upload',{
         category: 'function',
-        color: '#a6bbcf',
+        color: '#D8BFD8',
         defaults: {
             name: { value: ''  },
             containerName: {  value: '', required: true },
@@ -16,9 +16,27 @@
             return this.name || 'azure-blob-storage-upload';
         }
     });
+
+    RED.nodes.registerType('azure-blob-storage-download',{
+        category: 'function',
+        color: '#D8BFD8',
+        defaults: {
+            name: { value: ''  },
+            containerName: {  value: '', required: true },
+        },
+        credentials: {
+            accountName: { type: 'text' },
+            accountKey: { type: 'password' }
+        },
+        inputs: 1,
+        outputs: 1,
+        label: function() {
+            return this.name || 'azure-blob-storage-download';
+        }
+    });
 </script>
 
-<script type="text/html" data-template-name="azure-blob-storage">
+<script type="text/html" data-template-name="azure-blob-storage-upload">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name </label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -37,6 +55,29 @@
     </div>
 </script>
 
-<script type="text/html" data-help-name="azure-blob-storage">
-    <p> Azure blob storage </p>
+<script type="text/html" data-help-name="azure-blob-storage-upload">
+    <p> Azure blob storage upload </p>
+</script>
+
+<script type="text/html" data-template-name="azure-blob-storage-download">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name </label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-inpu-containerName"><i class="fa fa-tag"></i> Container name </label>
+        <input type="text" id="node-input-containerName" placeholder="Container name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-accountName"><i class="fa fa-tag"></i> Account name </label>
+        <input type="text" id="node-input-accountName" placeholder="Account name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-accountKey"><i class="fa fa-tag"></i> Account key </label>
+        <input type="password" id="node-input-accountKey" placeholder="Account key">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="azure-blob-storage-download">
+    <p> Azure blob storage download </p>
 </script>

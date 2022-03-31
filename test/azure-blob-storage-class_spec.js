@@ -1,3 +1,4 @@
+const os = require('os');
 const sinon = require('sinon');
 const expect = require('expect.js');
 const helper = require("node-red-node-test-helper");
@@ -20,7 +21,8 @@ describe('Azure Blob Storage class', function() {
                 uploadFile: () => {},
             };
 
-            sinon.replace(fakeBlockBlobClient, 'uploadFile', sinon.fake.resolves('final'));
+            // Fake res = { date: 1 }
+            sinon.replace(fakeBlockBlobClient, 'uploadFile', sinon.fake.resolves({ date: 1 }));
             sinon.replace(fakeContainerClient, 'exists', sinon.fake.resolves(true));
             sinon.replace(fakeContainerClient, 'getBlockBlobClient', sinon.fake.returns(fakeBlockBlobClient));
             sinon.replace(fakeClient, 'getContainerClient', sinon.fake.returns(fakeContainerClient));
@@ -72,7 +74,7 @@ describe('Azure Blob Storage class', function() {
 
                 return bind()
                         .then(res => {
-                            expect(res).to.be('final');
+                            expect(res).to.eql({ success: true, date: 1 });
                             expect(fakeBlockBlobClient.uploadFile.calledOnce).to.be(true);
                             expect(fakeBlockBlobClient.uploadFile.calledWith('/test')).to.be(true);
                         })
@@ -92,7 +94,53 @@ describe('Azure Blob Storage class', function() {
                     })
                     .catch(e => {
                         expect(e).to.be.an(Error);
-                        expect(e.message).to.equal('msg.blobName must be provided when msg.topic is "binary".');
+                        expect(e.message).to.equal('msg.blobName must be provided when msg.topic is "binary"');
+                    });
+            });
+        });
+    });
+
+    describe('Download related functionalities', function() {
+        let fakeClient, fakeContainerClient, fakeBlobClient;
+        beforeEach(function() {
+            fakeClient = {
+                getContainerClient: () => {},
+            };
+
+            fakeContainerClient = {
+                exists: () => {},
+                getBlobClient: () => {},
+            };
+
+            fakeBlobClient = {
+                exists: () => {},
+                downloadToFile: () => {},
+            };
+
+            sinon.replace(fakeBlobClient, 'downloadToFile', sinon.fake.resolves({ date: 1 }));
+            sinon.replace(fakeBlobClient, 'exists', sinon.fake.resolves(true));
+            sinon.replace(fakeContainerClient, 'exists', sinon.fake.resolves(true));
+            sinon.replace(fakeContainerClient, 'getBlobClient', sinon.fake.returns(fakeBlobClient));
+            sinon.replace(fakeClient, 'getContainerClient', sinon.fake.returns(fakeContainerClient));
+        });
+
+        afterEach(function() {
+            sinon.restore();
+        });
+
+        describe('downloadFile', function() {
+            it('Should use $HOME/.node-red as destination', function() {
+                const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
+                const bind = azureBlobStorage.downloadFile.bind(azureBlobStorage, 1, 'fakeBlobName', null);
+                sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
+                return bind()
+                    .then(res => {
+                        expect(res).to.eql({ success: true, date: 1 });
+                        expect(fakeBlobClient.downloadToFile.calledOnce).to.be(true);
+                        expect(fakeBlobClient.downloadToFile.calledWith(`${os.homedir()}/.node-red/fakeBlobName`)).to.be(true);
+                    })
+                    .catch(e => {
+                        throw e;
                     });
             });
         });
