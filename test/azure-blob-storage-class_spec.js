@@ -143,6 +143,20 @@ describe('Azure Blob Storage class', function() {
                         throw e;
                     });
             });
+
+            it('Throw error - msg.payload must be a string if explicitly given ', function() {
+                const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
+                const bind = azureBlobStorage.downloadFile.bind(azureBlobStorage, 1, 'fakeBlobName', [1, 2, 3]);
+                sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
+                return bind()
+                    .then(res => {
+                       throw new Error('Should not succeed');
+                    })
+                    .catch(e => {
+                        expect(e).to.be.an(Error);
+                        expect(e.message).to.equal('msg.payload must be a string, if explicitly given');
+                    });
+            });
         });
     });
 });
