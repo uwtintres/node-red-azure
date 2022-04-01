@@ -69,14 +69,15 @@ describe('Azure Blob Storage class', function() {
 
             it('Should use the original file name', function() {
                 const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
-                const bind = azureBlobStorage.uploadLocalFile.bind(azureBlobStorage, 1, null, '/test');
+                const bind = azureBlobStorage.uploadLocalFile.bind(azureBlobStorage, 1, null, '/test/fake.jpg');
                 sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
 
                 return bind()
                         .then(res => {
                             expect(res).to.eql({ success: true, date: 1 });
+                            expect(fakeContainerClient.getBlockBlobClient.calledWith('fake.jpg')).to.be(true);
                             expect(fakeBlockBlobClient.uploadFile.calledOnce).to.be(true);
-                            expect(fakeBlockBlobClient.uploadFile.calledWith('/test')).to.be(true);
+                            expect(fakeBlockBlobClient.uploadFile.calledWith('/test/fake.jpg')).to.be(true);
                         })
                         .catch(e => {
                             throw e;

@@ -90,6 +90,10 @@ class AzureBlobStorage {
         return { success: true, date: res.date };
     }
 
+    async downloadBinary(containerName, blobName, filePath) {
+
+    }
+
     async runDownload(operation, options) {
         // Update status in the node
         this.node.status({
