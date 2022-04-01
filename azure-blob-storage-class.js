@@ -22,8 +22,8 @@ class AzureBlobStorage {
     }
 
     async uploadLocalFile(containerName, blobName, filePath) {
-        if (typeof filePath !== 'string') throw new Error('msg.payload must be a string');
-        if (!path.isAbsolute(filePath)) throw new Error('msg.payload must be a string of absolute file path');
+        if (typeof filePath !== 'string') throw new Error('File path must be a string');
+        if (!path.isAbsolute(filePath)) throw new Error('File path must be a string of absolute file path');
 
         // If the msg.blobName is not given, use the original file name
         const finalBlobName = blobName || filePath.substring(filePath.lastIndexOf('/') + 1);
@@ -37,14 +37,15 @@ class AzureBlobStorage {
     }
 
     async uploadBinaryFile(containerName, blobName, buffer) {
-        if (!blobName) throw new Error('msg.blobName must be provided when msg.topic is "binary"');
+        if (!blobName) throw new Error('blobName must be provided when mode is "binary"');
+        if (!buffer) throw new Error('msg.payload must be provided as Buffer');
 
         this.client = this.createConnection();
         const containerClient = this.client.getContainerClient(containerName);
         const exists = await containerClient.exists();
         if (!exists) await containerClient.create({ access: 'container' });
         const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-        const res = blockBlobClient.uploadData(buffer);
+        const res = await blockBlobClient.uploadData(buffer);
         return { success: true, date: res.date };
     }
 
@@ -58,26 +59,24 @@ class AzureBlobStorage {
 
         let res;
         if (operation === 'file') {
-            const { containerName, blobName, payload } = options;
-            res = await this.uploadLocalFile(containerName, blobName, payload);
+            const { containerName, blobName, filePath } = options;
+            res = await this.uploadLocalFile(containerName, blobName, filePath);
         } else if (operation === 'binary') {
-            const { containerName, blobName, payload } = options;
-            res = await this.uploadBinaryFile(containerName, blobName, payload);
-        } else throw new Error('msg.topic must be either "file" or "binary".');
+            const { containerName, blobName, buffer } = options;
+            res = await this.uploadBinaryFile(containerName, blobName, buffer);
+        } else throw new Error('Mode must be either "file" or "binary".');
 
         // Clear status in the node
         this.node.status({});
         return res;
     }
 
-    async downloadFile(containerName, blobName, filePath) {
-        if (!blobName) throw new Error('msg.blobName must be provided for downloading');
-        // If filePath is not given, default location is $HOME/.node-red
-        const finalFilePath = filePath || `${os.homedir()}/.node-red/${blobName}`;
-        // filePath(msg.payload) must be a string if explicitly given
-        if (typeof finalFilePath !== 'string') throw new Error('msg.payload must be a string, if explicitly given');
-        // filePath(msg.payload) must be a string of absolute file path
-        if (!path.isAbsolute(finalFilePath)) throw new Error('msg.payload must be a string of absolute file path');
+    async downloadFile(containerName, blobName, filePathToStore) {
+        if (!blobName) throw new Error('blobName must be provided for downloading');
+        // If filePathToStore is not given, default location is $HOME/.node-red
+        const finalFilePath = filePathToStore || `${os.homedir()}/.node-red/${blobName}`;
+        if (typeof finalFilePath !== 'string') throw new Error('filePathToStore must be a string, if explicitly given');
+        if (!path.isAbsolute(finalFilePath)) throw new Error('filePathToStore must be a string of absolute file path');
 
         this.client = this.createConnection();
         const containerClient = this.client.getContainerClient(containerName);
@@ -91,7 +90,7 @@ class AzureBlobStorage {
     }
 
     async downloadBinary(containerName, blobName) {
-        if (!blobName) throw new Error('msg.blobName must be provided for downloading');
+        if (!blobName) throw new Error('blobName must be provided for downloading');
 
         this.client = this.createConnection();
         const containerClient = this.client.getContainerClient(containerName);
@@ -120,7 +119,7 @@ class AzureBlobStorage {
         } else if (operation === 'binary') {
             const { containerName, blobName } = options;
             res = await this.downloadBinary(containerName, blobName);
-        } else throw new Error('msg.topic must be either "file" or "binary".');
+        } else throw new Error('Mode must be either "file" or "binary".');
 
         // Clear status in the node
         this.node.status({});

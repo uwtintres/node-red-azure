@@ -1,7 +1,6 @@
 const os = require('os');
 const sinon = require('sinon');
 const expect = require('expect.js');
-const helper = require("node-red-node-test-helper");
 const AzureBlobStorage = require('../azure-blob-storage-class');
 
 describe('Azure Blob Storage class', function() {
@@ -33,7 +32,7 @@ describe('Azure Blob Storage class', function() {
         });
 
         describe('uploadLocalFile', function() {
-            it('Throw error - msg.payload should be a string', function() {
+            it('File path must be a string', function() {
                 const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
                 const bind = azureBlobStorage.uploadLocalFile.bind(azureBlobStorage, 1, 1, [1, 2, 3]);
                 sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
@@ -43,7 +42,7 @@ describe('Azure Blob Storage class', function() {
                         })
                         .catch(e => {
                             expect(e).to.be.an(Error);
-                            expect(e.message).to.equal('msg.payload must be a string');
+                            expect(e.message).to.equal('File path must be a string');
                             // fakeBlockBlobClient.uploadFile shouldn't be reached
                             expect(fakeBlockBlobClient.uploadFile.calledOnce).to.be(false);
                         });
@@ -52,7 +51,7 @@ describe('Azure Blob Storage class', function() {
 
             const testCases = ['../test', 'test/test1/']
             testCases.forEach((testCase, index) => {
-                it(`Throw error - msg.payload should be absolute path with path ${testCase}`, function() {
+                it(`Throw error - File path must be a string of absolute file path with ${testCase}`, function() {
                     const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
                     const bind = azureBlobStorage.uploadLocalFile.bind(azureBlobStorage, 1, 1, testCase);
 
@@ -62,7 +61,7 @@ describe('Azure Blob Storage class', function() {
                             })
                             .catch(e => {
                                 expect(e).to.be.an(Error);
-                                expect(e.message).to.equal('msg.payload must be a string of absolute file path');
+                                expect(e.message).to.equal('File path must be a string of absolute file path');
                             });
                 });
             });
@@ -95,7 +94,7 @@ describe('Azure Blob Storage class', function() {
                     })
                     .catch(e => {
                         expect(e).to.be.an(Error);
-                        expect(e.message).to.equal('msg.blobName must be provided when msg.topic is "binary"');
+                        expect(e.message).to.equal('blobName must be provided when mode is "binary"');
                     });
             });
         });
@@ -147,7 +146,7 @@ describe('Azure Blob Storage class', function() {
                     });
             });
 
-            it('Throw error - msg.payload must be a string if explicitly given', function() {
+            it('Throw error - filePathToStore must be a string, if explicitly given', function() {
                 const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
                 const bind = azureBlobStorage.downloadFile.bind(azureBlobStorage, 1, 'fakeBlobName', [1, 2, 3]);
                 sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
@@ -157,7 +156,7 @@ describe('Azure Blob Storage class', function() {
                     })
                     .catch(e => {
                         expect(e).to.be.an(Error);
-                        expect(e.message).to.equal('msg.payload must be a string, if explicitly given');
+                        expect(e.message).to.equal('filePathToStore must be a string, if explicitly given');
                     });
             });
         });

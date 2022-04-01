@@ -7,7 +7,8 @@
   },
   "node-red": {
     "nodes": {
-      "azure-blob-storage": "azure-blob-storage.js"
+      "azure-blob-storage-upload": "azure-blob-storage-upload.js",
+      "azure-blob-storage-download": "azure-blob-storage-download.js"
     }
   },
   "author": "Ray Wang",

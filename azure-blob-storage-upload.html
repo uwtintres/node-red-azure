@@ -1,0 +1,77 @@
+<script type="text/javascript">
+    RED.nodes.registerType('azure-blob-storage-upload',{
+        category: 'function',
+        color: '#D8BFD8',
+        defaults: {
+            name: { value: ''  },
+            mode: { value: 'file', required: true },
+            filePath: { value: '' },
+            containerName: {  value: '', required: true },
+            blobName: { value: '' },
+        },
+        credentials: {
+            accountName: { type: 'text' },
+            accountKey: { type: 'password' }
+        },
+        inputs: 1,
+        outputs: 1,
+        label: function() {
+            return this.name || 'azure-blob-storage-upload';
+        },
+        oneditprepare: function() {
+            $('#node-input-mode').on('change', function() {
+                // Hide filePath input when mode is 'binary'
+                if (this.value === 'binary') {
+                    $('#node-input-div-filePath').hide();
+                    document.getElementById('node-input-filePath').value = '';
+                } else {
+                    $('#node-input-div-filePath').show();
+                }
+            });
+        },
+    });
+</script>
+
+<script type="text/html" data-template-name="azure-blob-storage-upload">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name </label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-mode"><i class="fa fa-tag"></i> Mode </label>
+        <select name="node-input-mode" id="node-input-mode">
+            <option value="file"> file </option>
+            <option value="binary"> binary </option>
+        </select>
+    </div>
+
+    <div id="node-input-div-filePath" class="form-row">
+        <label for="node-input-filePath"><i class="fa fa-tag"></i> File path </label>
+        <input type="text" id="node-input-filePath" placeholder="Must be an absolute path to local file system">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-containerName"><i class="fa fa-tag"></i> Container name </label>
+        <input type="text" id="node-input-containerName" placeholder="Container name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-blobName"><i class="fa fa-tag"></i> Blob name </label>
+        <input type="text" id="node-input-blobName" placeholder="Blob name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-accountName"><i class="fa fa-tag"></i> Account name </label>
+        <input type="text" id="node-input-accountName" placeholder="Account name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-accountKey"><i class="fa fa-tag"></i> Account key </label>
+        <input type="password" id="node-input-accountKey" placeholder="Account key">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="azure-blob-storage-upload">
+    <p> Upload files to Azure Blob Storage </p>
+</script>
