@@ -116,10 +116,12 @@ describe('Azure Blob Storage class', function() {
             fakeBlobClient = {
                 exists: () => {},
                 downloadToFile: () => {},
+                downloadToBuffer: () => {},
             };
 
-            sinon.replace(fakeBlobClient, 'downloadToFile', sinon.fake.resolves({ date: 1 }));
             sinon.replace(fakeBlobClient, 'exists', sinon.fake.resolves(true));
+            sinon.replace(fakeBlobClient, 'downloadToFile', sinon.fake.resolves({ date: 1 }));
+            sinon.replace(fakeBlobClient, 'downloadToBuffer', sinon.fake.resolves('fakeBuffer'));
             sinon.replace(fakeContainerClient, 'exists', sinon.fake.resolves(true));
             sinon.replace(fakeContainerClient, 'getBlobClient', sinon.fake.returns(fakeBlobClient));
             sinon.replace(fakeClient, 'getContainerClient', sinon.fake.returns(fakeContainerClient));
@@ -130,13 +132,13 @@ describe('Azure Blob Storage class', function() {
         });
 
         describe('downloadFile', function() {
-            it('Should use $HOME/.node-red as destination', function() {
+            it('Should use $HOME/.node-red as destination, and response should contain the file location', function() {
                 const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
                 const bind = azureBlobStorage.downloadFile.bind(azureBlobStorage, 1, 'fakeBlobName', null);
                 sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
                 return bind()
                     .then(res => {
-                        expect(res).to.eql({ success: true, date: 1 });
+                        expect(res).to.eql({ success: true, date: 1, fileLocation: `${os.homedir()}/.node-red/fakeBlobName` });
                         expect(fakeBlobClient.downloadToFile.calledOnce).to.be(true);
                         expect(fakeBlobClient.downloadToFile.calledWith(`${os.homedir()}/.node-red/fakeBlobName`)).to.be(true);
                     })
@@ -145,7 +147,7 @@ describe('Azure Blob Storage class', function() {
                     });
             });
 
-            it('Throw error - msg.payload must be a string if explicitly given ', function() {
+            it('Throw error - msg.payload must be a string if explicitly given', function() {
                 const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
                 const bind = azureBlobStorage.downloadFile.bind(azureBlobStorage, 1, 'fakeBlobName', [1, 2, 3]);
                 sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
@@ -157,6 +159,21 @@ describe('Azure Blob Storage class', function() {
                         expect(e).to.be.an(Error);
                         expect(e.message).to.equal('msg.payload must be a string, if explicitly given');
                     });
+            });
+        });
+
+        describe('downloadBinary', function() {
+            it('Response should contain the buffer returned from the api call', function() {
+                const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
+                const bind = azureBlobStorage.downloadBinary.bind(azureBlobStorage, 1, 'fakeBlobName');
+                sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
+                return bind()
+                        .then(res => {
+                            expect(res).to.eql({ success: true, buffer: 'fakeBuffer' });
+                        })
+                        .catch(e => {
+                            throw e;
+                        });
             });
         });
     });

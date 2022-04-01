@@ -13,7 +13,7 @@ module.exports = function(RED) {
             };
             try {
                 const res = await azureBlobStorageIns.run(msg.topic, options);
-                this.send(res);
+                this.send({ payload: res });
             } catch(e) {
                 // Clear status in the node
                 this.status({});
