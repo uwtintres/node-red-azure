@@ -73,19 +73,41 @@
 
 <script type="text/html" data-help-name="azure-blob-storage-download">
     <p> Download files from Azure Blob Storage </p>
-    <h3>Inputs</h3>
+    <h3>Outputs</h3>
     <dl class="message-properties">
-        <dt> topic
+        <dt> msg.payload.success
+            <span class="property-type"> boolean </span>
+        </dt>
+        <dd> A flog that indicates if the downloading succeeds or not. </dd>
+
+        <dt class="message-properties"> msg.payload.date
             <span class="property-type"> string </span>
         </dt>
-        <dd> Topic must be either "file" or "binary", indicating which format the downloaded files would be in. </dd>
-        <dt class="message-properties"> payload
+        <dd> A date string representing when the downloading happens. Only presented if the mode is 'file'. </dd>
+
+        <dt class="message-properties"> msg.payload.fileLocation
             <span class="property-type"> string </span>
         </dt>
-        <dd> Must be a string of an absolute file path if topic is 'file'. Ignored if topic is 'binary'. </dd>
-        <dt class="message-properties"> blobName
-            <span class="property-type"> string </span>
+        <dd> A string of an absolute path where the downloaded file should be located. Only presented if the mode is 'file'. </dd>
+
+        <dt class="message-properties"> msg.payload.buffer
+            <span class="property-type"> Buffer </span>
         </dt>
-        <dd> Must be a string of an absolute file path if topic is 'file'. Ignored if topic is 'binary'. </dd>
+        <dd> A Buffer class instance containing the downloaded content. Only presented if the mode is 'binary'. </dd>
     </dl>
+    <h3> Details </h3>
+    <p>
+        There are two modes for this node: file mode and binary mode.
+    </p>
+    <h5> 'file' mode </h5>
+    <p> In file mode, the node will try to download the file with name specified in <strong>Blob name</strong>, and store it to the local file system.
+        if the file path to store is not specified, the default location will be <code>os.homedir()/.node-red</code> and the file name will be the same as the
+        blob name.
+    </p>
+    <h5> 'binary' mode </h5>
+    <p> In binary mode, the node will try to download the file with name specified in <strong>Blob name</strong>, and store the downloaded content as <code>msg.payload.buffer</code>.
+        The content can then be passed to the next node for further usage.
+    </p>
+
+    <p> Both mode throw errors if the container specified in the node editor does not exist, or the blob specified does not exist in the container.</p>
 </script>

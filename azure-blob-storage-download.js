@@ -12,7 +12,7 @@ module.exports = function(RED) {
                     containerName: config.containerName,
                 };
                 const res = await azureBlobStorageIns.runDownload(config.mode, options);
-                this.send({payload: res});
+                this.send({ payload: res });
             } catch (e) {
                 // Clear status in the node
                 this.status({});
