@@ -38,7 +38,7 @@ class AzureBlobStorage {
 
     async uploadBinaryFile(containerName, blobName, buffer) {
         if (!blobName) throw new Error('blobName must be provided when mode is "binary"');
-        if (!buffer) throw new Error('msg.payload must be provided as Buffer');
+        if (!buffer) throw new Error('msg.payload must be provided as an instance of Buffer');
 
         this.client = this.createConnection();
         const containerClient = this.client.getContainerClient(containerName);

@@ -95,17 +95,17 @@
         </dt>
         <dd> A Buffer class instance containing the downloaded content. Only presented if the mode is 'binary'. </dd>
     </dl>
-    <h3> Details </h3>
+    <h3>Details</h3>
     <p>
         There are two modes for this node: file mode and binary mode.
     </p>
     <h5> 'file' mode </h5>
-    <p> In file mode, the node will try to download the file with name specified in <strong>Blob name</strong>, and store it to the local file system.
-        if the file path to store is not specified, the default location will be <code>os.homedir()/.node-red</code> and the file name will be the same as the
+    <p> In file mode, the node will try to download the file with name specified in blob name attribute, and store it to the local file system.
+        if the file path to store attribute is not specified, the default location will be <code>os.homedir()/.node-red</code> and the file name will be the same as the
         blob name.
     </p>
     <h5> 'binary' mode </h5>
-    <p> In binary mode, the node will try to download the file with name specified in <strong>Blob name</strong>, and store the downloaded content as <code>msg.payload.buffer</code>.
+    <p> In binary mode, the node will try to download the file with name specified in blob name attribute, and store the downloaded content as <code>msg.payload.buffer</code>.
         The content can then be passed to the next node for further usage.
     </p>
 
