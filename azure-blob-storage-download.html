@@ -16,12 +16,12 @@
         inputs: 1,
         outputs: 1,
         label: function() {
+            // if (this.filePathToStore.value) return `Download ${this.filePathToStore.value}`;
             return this.name || 'azure-blob-storage-download';
         },
         oneditprepare: function() {
             $('#node-input-mode').on('change', function() {
-               if (this.value === 'file') {
-                   document.getElementById('node-input-filePathToStore').value = '';
+                if (this.value === 'file') {
                    $('#node-input-div-filePathToStore').show();
                } else {
                    $('#node-input-div-filePathToStore').hide();
