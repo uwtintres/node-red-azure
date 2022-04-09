@@ -12,6 +12,7 @@ The example flow is shown as follows:
 2. In the editor section, select which mode to use and complete required inputs. The example below
 shows what the inputs should look like. In this example, under `file` mode, the `Upload` node will try to locate the file `/Users/tsungjui/.node-red/music.wav`, upload it to Azure Blob Storage, under container `test`
    and name the blob `hello.wav`.
+   
 ![Upload node configuration](img/upload/upload-file.png)
 For more information, check the help guide in node-red info tab.
 3. Click Deploy in the top right corner.
@@ -29,6 +30,8 @@ to the container `test`, and name the blob `hello1.wav` using `Upload` node bina
 1. Drag `Upload` and `Download` node from section `azure-blob-storage`.
 2. In the `Download` node's editor section, complete all the required inputs. In this example, we are trying to download the blob named `hello.wav` in container `test`
    as binary content(by selecting `binary` mode).
+   
    ![Download node configuration](img/download/download-file.png)
+   
 3. In the `Upload` node's editor section, complete all the required inputs. In this example, the node takes
    ![Upload binary configuration](img/download/upload-binary.png)
