@@ -1,6 +1,6 @@
 <script type="text/javascript">
-    RED.nodes.registerType('azure-blob-storage-upload',{
-        category: 'function',
+    RED.nodes.registerType('Upload',{
+        category: 'azure blob storage',
         color: '#D8BFD8',
         defaults: {
             name: { value: ''  },
@@ -24,23 +24,26 @@
         inputs: 1,
         outputs: 1,
         label: function() {
-            return this.name || 'azure-blob-storage-upload';
+            if (this.name) return this.name;
+            if (this.mode === 'file' && this.filePath) return `Upload ${this.filePath}`;
+            if (this.mode === 'binary') return `Upload binary as blob`;
+            return 'Upload';
         },
         oneditprepare: function() {
             $('#node-input-mode').on('change', function() {
                 // Hide filePath input when mode is 'binary'
                 if (this.value === 'binary') {
                     $('#node-input-div-filePath').hide();
-                    document.getElementById('node-input-filePath').value = '';
                 } else {
                     $('#node-input-div-filePath').show();
                 }
             });
         },
+        icon: 'font-awesome/fa-cloud-upload',
     });
 </script>
 
-<script type="text/html" data-template-name="azure-blob-storage-upload">
+<script type="text/html" data-template-name="Upload">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name </label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -80,7 +83,7 @@
     </div>
 </script>
 
-<script type="text/html" data-help-name="azure-blob-storage-upload">
+<script type="text/html" data-help-name="Upload">
     <p> Upload files to Azure Blob Storage </p>
 
     <h3>Inputs</h3>

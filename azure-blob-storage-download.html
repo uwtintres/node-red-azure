@@ -1,6 +1,6 @@
 <script type="text/javascript">
-    RED.nodes.registerType('azure-blob-storage-download',{
-        category: 'function',
+    RED.nodes.registerType('Download',{
+        category: 'azure blob storage',
         color: '#D8BFD8',
         defaults: {
             name: { value: ''  },
@@ -16,8 +16,10 @@
         inputs: 1,
         outputs: 1,
         label: function() {
-            // if (this.filePathToStore.value) return `Download ${this.filePathToStore.value}`;
-            return this.name || 'azure-blob-storage-download';
+            if (this.name) return this.name;
+            if (this.mode === 'file' && this.filePathToStore) return `Download blob as ${this.filePathToStore}`;
+            if (this.mode === 'binary') return `Download blob as binary`;
+            return 'Download';
         },
         oneditprepare: function() {
             $('#node-input-mode').on('change', function() {
@@ -27,11 +29,12 @@
                    $('#node-input-div-filePathToStore').hide();
                }
             });
-        }
+        },
+        icon: 'font-awesome/fa-cloud-download',
     });
 </script>
 
-<script type="text/html" data-template-name="azure-blob-storage-download">
+<script type="text/html" data-template-name="Download">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name </label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -47,7 +50,7 @@
 
     <div id="node-input-div-filePathToStore" class="form-row">
         <label for="node-input-filePathToStore"><i class="fa fa-tag"></i> File path to store </label>
-        <input type="text" id="node-input-filePathToStore" placeholder="Must be an absolute path to local file system">
+        <input type="text" id="node-input-filePathToStore" placeholder="Must be an absolute path to local file system, including file name">
     </div>
 
     <div class="form-row">
@@ -71,29 +74,17 @@
     </div>
 </script>
 
-<script type="text/html" data-help-name="azure-blob-storage-download">
+<script type="text/html" data-help-name="Download">
     <p> Download files from Azure Blob Storage </p>
     <h3>Outputs</h3>
     <dl class="message-properties">
-        <dt> msg.payload.success
-            <span class="property-type"> boolean </span>
+        <dt> msg.payload
+            <span class="property-type"> Buffer | string </span>
         </dt>
-        <dd> A flog that indicates if the downloading succeeds or not. </dd>
-
-        <dt class="message-properties"> msg.payload.date
-            <span class="property-type"> string </span>
-        </dt>
-        <dd> A date string representing when the downloading happens. Only presented if the mode is 'file'. </dd>
-
-        <dt class="message-properties"> msg.payload.fileLocation
-            <span class="property-type"> string </span>
-        </dt>
-        <dd> A string of an absolute path where the downloaded file should be located. Only presented if the mode is 'file'. </dd>
-
-        <dt class="message-properties"> msg.payload.buffer
-            <span class="property-type"> Buffer </span>
-        </dt>
-        <dd> A Buffer class instance containing the downloaded content. Only presented if the mode is 'binary'. </dd>
+        <dd>
+            If the mode is 'file', this field would be a string of an absolute path where the downloaded file should be located.
+            If the mode is 'binary', this field would be a Buffer class instance containing the downloaded content.
+        </dd>
     </dl>
     <h3>Details</h3>
     <p>
@@ -105,7 +96,7 @@
         blob name.
     </p>
     <h5> 'binary' mode </h5>
-    <p> In binary mode, the node will try to download the file with name specified in blob name attribute, and store the downloaded content as <code>msg.payload.buffer</code>.
+    <p> In binary mode, the node will try to download the file with name specified in blob name attribute, and store the downloaded content as <code>msg.payload</code>.
         The content can then be passed to the next node for further usage.
     </p>
 
