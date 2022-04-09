@@ -137,7 +137,7 @@ describe('Azure Blob Storage class', function() {
                 sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
                 return bind()
                     .then(res => {
-                        expect(res).to.eql({ success: true, date: 1, fileLocation: `${os.homedir()}/.node-red/fakeBlobName` });
+                        expect(res).to.eql(`${os.homedir()}/.node-red/fakeBlobName`);
                         expect(fakeBlobClient.downloadToFile.calledOnce).to.be(true);
                         expect(fakeBlobClient.downloadToFile.calledWith(`${os.homedir()}/.node-red/fakeBlobName`)).to.be(true);
                     })
@@ -168,7 +168,7 @@ describe('Azure Blob Storage class', function() {
                 sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
                 return bind()
                         .then(res => {
-                            expect(res).to.eql({ success: true, buffer: 'fakeBuffer' });
+                            expect(res).to.eql('fakeBuffer');
                         })
                         .catch(e => {
                             throw e;

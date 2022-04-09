@@ -85,8 +85,8 @@ class AzureBlobStorage {
         const blobClient = containerClient.getBlobClient(blobName);
         const blobExists = await blobClient.exists();
         if (!blobExists) throw new Error(`Blob ${blobName} does not exist in container ${containerName}`);
-        const res = await blobClient.downloadToFile(finalFilePath);
-        return { success: true, date: res.date, fileLocation: finalFilePath };
+        await blobClient.downloadToFile(finalFilePath);
+        return finalFilePath;
     }
 
     async downloadBinary(containerName, blobName) {
@@ -100,8 +100,7 @@ class AzureBlobStorage {
         const blobExists = await blobClient.exists();
         if (!blobExists) throw new Error(`Blob ${blobName} does not exist in container ${containerName}`);
 
-        const buffer = await blobClient.downloadToBuffer();
-        return { success: true, buffer };
+        return await blobClient.downloadToBuffer();
     }
 
     async runDownload(operation, options) {
@@ -114,8 +113,8 @@ class AzureBlobStorage {
 
         let res;
         if (operation === 'file') {
-            const { containerName, blobName, payload } = options;
-            res = await this.downloadFile(containerName, blobName, payload);
+            const { containerName, blobName, filePathToStore } = options;
+            res = await this.downloadFile(containerName, blobName, filePathToStore);
         } else if (operation === 'binary') {
             const { containerName, blobName } = options;
             res = await this.downloadBinary(containerName, blobName);

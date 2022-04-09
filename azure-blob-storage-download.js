@@ -22,7 +22,7 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType("azure-blob-storage-download", azureBlobStorageDownload, {
+    RED.nodes.registerType("Download", azureBlobStorageDownload, {
         credentials: {
             accountName: { type: 'text' },
             accountKey: { type: 'password' }

@@ -23,7 +23,7 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType("azure-blob-storage-upload", azureBlobStorageUpload, {
+    RED.nodes.registerType("Upload", azureBlobStorageUpload, {
         credentials: {
             accountName: { type: 'text' },
             accountKey: { type: 'password' }
