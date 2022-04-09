@@ -5,7 +5,9 @@
 `npm install @intres/node-red-azure-storage`
 ## Example usage of Upload node
 The example flow is shown as follows:
+
 ![Upload example flow](img/upload/upload-example-flow.png)
+
 1. Drag the `Upload` node from section `azure-blob-storage`.
 2. In the editor section, select which mode to use and complete required inputs. The example below
 shows what the inputs should look like. In this example, under `file` mode, the `Upload` node will try to locate the file `/Users/tsungjui/.node-red/music.wav`, upload it to Azure Blob Storage, under container `test`
@@ -18,7 +20,9 @@ For more information, check the help guide in node-red info tab.
 
 ## Example usage of Download node
 The example flow is shown as follows:
+
 ![Download example flow](img/download/download-example-flow.png)
+
 In this example, we will download the blob `hello.wav` uploaded in the above example as binary content, and upload that binary content
 to the container `test`, and name the blob `hello1.wav` using `Upload` node binary mode.
 
