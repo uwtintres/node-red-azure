@@ -28,10 +28,12 @@ In this example, we will download the blob `hello.wav` uploaded in the above exa
 to the container `test`, and name the blob `hello1.wav` using `Upload` node binary mode.
 
 1. Drag `Upload` and `Download` node from section `azure-blob-storage`.
-2. In the `Download` node's editor section, complete all the required inputs. In this example, we are trying to download the blob named `hello.wav` in container `test`
+2. In the `Download` node's editor section, complete all the required inputs. In this example, we will try to download the blob named `hello.wav` in container `test`
    as binary content(by selecting `binary` mode).
    
    ![Download node configuration](img/download/download-file.png)
    
-3. In the `Upload` node's editor section, complete all the required inputs. In this example, the node takes
+3. In the `Upload` node's editor section, complete all the required inputs. In this example, the node will take `msg.payload` from `Download` node and upload that binary content to the same container `test`, but name it
+   to `hello1.wav`.
+   
    ![Upload binary configuration](img/download/upload-binary.png)
