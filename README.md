@@ -14,7 +14,7 @@ shows what the inputs should look like. In this example, under `file` mode, the 
    and name the blob `hello.wav`.
    
 ![Upload node configuration](img/upload/upload-file.png)
-For more information, check the help guide in node-red info tab.
+
 3. Click Deploy in the top right corner.
 4. Fire the inject node, and a response should be presented in the node-red debug tab.
    ![Upload response](img/upload/upload-response.png)
