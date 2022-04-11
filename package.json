@@ -15,7 +15,7 @@
   "license": "ISC",
   "keywords": [
     "Javascript",
-    "Node-red",
+    "node-red",
     "Azure Blob Storage"
   ],
   "homepage": "https://github.com/uwtintres/node-red-azure",
