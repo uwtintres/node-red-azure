@@ -11,8 +11,14 @@
       "azure-blob-storage-download": "azure-blob-storage-download.js"
     }
   },
-  "author": "Ray Wang",
+  "author": "Tsung Jui Wang",
   "license": "ISC",
+  "keywords": [
+    "Javascript",
+    "Node-red",
+    "Azure Blob Storage"
+  ],
+  "homepage": "",
   "dependencies": {
     "@azure/storage-blob": "^12.9.0"
   },
