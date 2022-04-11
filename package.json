@@ -6,6 +6,7 @@
     "test": "mocha 'test/**/*_spec.js'"
   },
   "node-red": {
+    "version": ">=2.0.0",
     "nodes": {
       "azure-blob-storage-upload": "azure-blob-storage-upload.js",
       "azure-blob-storage-download": "azure-blob-storage-download.js"
