@@ -1,6 +1,6 @@
 {
   "name": "@intres/node-red-azure-storage",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node-red node for Azure Storage",
   "scripts": {
     "test": "mocha 'test/**/*_spec.js'"
