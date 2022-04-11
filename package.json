@@ -18,7 +18,7 @@
     "Node-red",
     "Azure Blob Storage"
   ],
-  "homepage": "",
+  "homepage": "https://github.com/uwtintres/node-red-azure",
   "dependencies": {
     "@azure/storage-blob": "^12.9.0"
   },
