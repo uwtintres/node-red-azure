@@ -2,6 +2,9 @@
   "name": "@intres/node-red-azure-storage",
   "version": "1.0.4",
   "description": "Node-red node for Azure Storage",
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "scripts": {
     "test": "mocha 'test/**/*_spec.js'"
   },
@@ -13,7 +16,10 @@
     }
   },
   "author": "Tsung Jui Wang",
-  "license": "ISC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uwtintres/node-red-azure/issues"
+  },
   "keywords": [
     "Javascript",
     "node-red",
