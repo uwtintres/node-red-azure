@@ -40,7 +40,6 @@ describe('uploadBinaryFile with helper', function() {
     it('Blobname is taken from config, should be set to test.pdf', function (done) {
         helper.load(uploadNode, flow, function () {
             let n1 = helper.getNode("n1");
-
             n1.on('input', msg => {
                 // mimics the options object from the azureBlobStorageUpload node
                 const options = {
@@ -56,16 +55,13 @@ describe('uploadBinaryFile with helper', function() {
                     done(err);
                 }
             });
-
             n1.receive({ payload: buffer });
-
         });
     });
 
     it('Blobname should be overridden by msg.blobName to override.pdf', function (done) {
         helper.load(uploadNode, flow, function () {
             let n1 = helper.getNode("n1");
-
             n1.on('input', msg => {
                 // mimics the options object from the azureBlobStorageUpload node
                 const options = {
@@ -81,10 +77,8 @@ describe('uploadBinaryFile with helper', function() {
                     done(err);
                 }
             });
-
             // passes in msg with msg.blobName set to override.pdf
             n1.receive({ payload: buffer, blobName: 'override.pdf' });
-
         });
     });
 });
