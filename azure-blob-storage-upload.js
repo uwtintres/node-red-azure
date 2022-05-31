@@ -8,7 +8,8 @@ module.exports = function(RED) {
             const options = {
                 buffer: msg.payload,
                 filePath: config.filePath,
-                blobName: config.blobName,
+                // Allow blobName to be overwritten by msg.blobName
+                blobName: msg.blobName || config.blobName,
                 containerName: config.containerName,
             };
             try {
