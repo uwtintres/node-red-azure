@@ -1,6 +1,6 @@
 {
   "name": "@intres/node-red-azure-storage",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Node-red node for Azure Storage",
   "engines": {
     "node": ">=12.0.0"
