@@ -18,10 +18,12 @@ describe('Azure Blob Storage class', function() {
 
             fakeBlockBlobClient = {
                 uploadFile: () => {},
+                uploadData: () => {},
             };
 
             // Fake res = { date: 1 }
             sinon.replace(fakeBlockBlobClient, 'uploadFile', sinon.fake.resolves({ date: 1 }));
+            sinon.replace(fakeBlockBlobClient, 'uploadData', sinon.fake.resolves({ date: 1 }));
             sinon.replace(fakeContainerClient, 'exists', sinon.fake.resolves(true));
             sinon.replace(fakeContainerClient, 'getBlockBlobClient', sinon.fake.returns(fakeBlockBlobClient));
             sinon.replace(fakeClient, 'getContainerClient', sinon.fake.returns(fakeContainerClient));
@@ -47,7 +49,6 @@ describe('Azure Blob Storage class', function() {
                             expect(fakeBlockBlobClient.uploadFile.calledOnce).to.be(false);
                         });
             });
-
 
             const testCases = ['../test', 'test/test1/']
             testCases.forEach((testCase, index) => {
@@ -96,6 +97,23 @@ describe('Azure Blob Storage class', function() {
                         expect(e).to.be.an(Error);
                         expect(e.message).to.equal('blobName must be provided when mode is "binary"');
                     });
+            });
+
+            it('Should call uploadData when blobName is present and type is binary', function() {
+                const buffer = Buffer.from('test');
+                const azureBlobStorage = new AzureBlobStorage('fake', 'fake', 'fake');
+                const bind = azureBlobStorage.uploadBinaryFile.bind(azureBlobStorage, 1, 'test.pdf', buffer);
+                sinon.replace(azureBlobStorage, 'createConnection', sinon.fake.returns(fakeClient));
+                return bind()
+                        .then(res => {
+                            expect(res).to.eql({ success: true, date: 1 });
+                            expect(fakeContainerClient.getBlockBlobClient.calledWith('test.pdf')).to.be(true);
+                            expect(fakeBlockBlobClient.uploadData.calledOnce).to.be(true);
+                            expect(fakeBlockBlobClient.uploadData.calledWith(buffer)).to.be(true);
+                        })
+                        .catch(e => {
+                            throw e;
+                        });
             });
         });
     });

@@ -1,6 +1,6 @@
 {
   "name": "@intres/node-red-azure-storage",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Node-red node for Azure Storage",
   "engines": {
     "node": ">=12.0.0"
@@ -32,6 +32,8 @@
   "devDependencies": {
     "expect.js": "^0.3.1",
     "mocha": "^9.2.2",
+    "node-red": "^2.2.2",
+    "node-red-node-test-helper": "^0.2.7",
     "sinon": "^9.2.4"
   }
 }

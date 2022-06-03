@@ -11,11 +11,7 @@
                 return true;
             }},
             containerName: {  value: '', required: true },
-            blobName: { value: '', validate: function() {
-                // In binary mode, blob name is required
-                if (this.mode === 'binary') return !!this.blobName;
-                return true;
-            }},
+            blobName: { value: '' },
         },
         credentials: {
             accountName: { type: 'text' },
