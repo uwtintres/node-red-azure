@@ -1,9 +1,15 @@
 # node-red-azure-storage
 ## Introduction
 **node-red-azure-storage** is a collection of nodes that perform uploading and downloading blob file from [Microsoft Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
-## Installation
+### Installation
 `npm install @intres/node-red-azure-storage`
-## Example usage of Upload node
+
+### About us
+The [Internet of Things Research (INTRES) Group](https://github.com/UWTINTRES)
+at the University of Washington Tacoma (UWT) developed and maintains this package to promote Internet of Things (IoT) research and teaching. This package seeks to accelerate the adoption of IoT concepts by developing a simple mechanism to increase the productivity of researchers, software engineers, developers, and data scientists.
+
+
+### Example usage of Upload node
 The example flow is shown as follows:
 
 ![Upload example flow](https://github.com/uwtintres/node-red-azure/blob/main/img/upload/upload-example-flow.png?raw=true)
@@ -19,7 +25,7 @@ shows what the inputs should look like. In this example, under `file` mode, the 
 4. Fire the inject node, and a response should be presented in the node-red debug tab.
    ![Upload response](https://github.com/uwtintres/node-red-azure/blob/main/img/upload/upload-response.png?raw=true)
 
-## Example usage of Download node
+### Example usage of Download node
 The example flow is shown as follows:
 
 ![Download example flow](https://github.com/uwtintres/node-red-azure/blob/main/img/download/download-example-flow.png?raw=true)
@@ -37,3 +43,6 @@ to the container `test`, and name the blob `hello1.wav` using `Upload` node bina
    to `hello1.wav`.
    
    ![Upload binary configuration](https://github.com/uwtintres/node-red-azure/blob/main/img/download/upload-binary.png?raw=true)
+
+#### Disclaimer
+INTRES and UWT are not responsible for the usage or utilization of these packages. They are meant to promote IoT research and education. IoT service providers may require additional verification steps to utilize the features outlined in these packages. We are not in any way responsible for the misuse of these packages. For more details on the service agreement and terms, please click [here](https://azure.microsoft.com/en-us/support/legal/).
